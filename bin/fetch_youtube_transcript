@@ -1,17 +1,17 @@
 #!/usr/bin/env ruby
 
-require 'chess2png'
+require 'fetch_youtube_transcript'
 require 'optparse'
 
 options = {}
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: fetch_youtube_transcript -i input -o output"
+  opts.banner = "Usage: fetch_youtube_transcript -v video_id -o output"
 
-  opts.on("-i", "--input PATH", "Path to a PGN file") do |input|
+  opts.on("-v", "--video VIDEO_ID", "Video id from Youtube") do |input|
     options[:input] = input
   end
 
-  opts.on("-o", "--output PATH", "Path where the resulting PNG file will be saved") do |output|
+  opts.on("-o", "--output PATH", "Path where the English transcript file will be saved") do |output|
     options[:output] = output
   end
 end
@@ -26,7 +26,7 @@ begin
     raise OptionParser::MissingArgument.new(missing.join(", "))
   end
 
-  FetchYoutubeTranscript.new.encode(Chess::Game.load_pgn(options[:input]).current).save(options[:output])
+  FetchYoutubeTranscript.new(options[:video]).download_transcript_to(options[:output])
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   puts $!.to_s
   puts optparse
