@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    fetch_youtube_transcript (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (10.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug
+  fetch_youtube_transcript!
+
+BUNDLED WITH
+   1.15.1
