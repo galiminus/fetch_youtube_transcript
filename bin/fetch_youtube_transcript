@@ -3,12 +3,14 @@
 require 'fetch_youtube_transcript'
 require 'optparse'
 
+require 'byebug'
+
 options = {}
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: fetch_youtube_transcript -v video_id -o output"
 
-  opts.on("-v", "--video VIDEO_ID", "Video id from Youtube") do |input|
-    options[:input] = input
+  opts.on("-v", "--video VIDEO_ID", "Video id from Youtube") do |video_id|
+    options[:video_id] = video_id
   end
 
   opts.on("-o", "--output PATH", "Path where the English transcript file will be saved") do |output|
@@ -20,13 +22,13 @@ begin
   optparse.parse!
 
   # from https://stackoverflow.com/a/2149183
-  mandatory = [:input, :output]
+  mandatory = [:video_id, :output]
   missing = mandatory.select{ |param| options[param].nil? }
   unless missing.empty?
     raise OptionParser::MissingArgument.new(missing.join(", "))
   end
 
-  FetchYoutubeTranscript.new(options[:video]).download_transcript_to(options[:output])
+  FetchYoutubeTranscript.new(video_id: options[:video_id]).download_transcript_to(options[:output])
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   puts $!.to_s
   puts optparse
